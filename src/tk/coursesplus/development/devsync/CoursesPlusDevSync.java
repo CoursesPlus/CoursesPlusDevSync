@@ -125,9 +125,14 @@ public class CoursesPlusDevSync extends JFrame implements ActionListener {
 	    Object source = event.getSource();
 	    if (source == startBtn)
 	    {
-		    addLogEntry("Starting sync...");
-		    //JOptionPane.showMessageDialog(null,"Hello!","Important message",
-		    //JOptionPane.PLAIN_MESSAGE); setVisible(true);  // show something
+	    	if (startBtn.getText() == "Stop!") {
+	    		// We should stop it!
+	    		addLogEntry("Stopping watcher...");
+	    		thread.stop();
+	    		startBtn.setText("Start!");
+	    		return;
+	    	}
+		    addLogEntry("Starting watcher...");
 		    try {
 			    if (!fileThing.isDirectory() || !fileThing.exists()) {
 			    	addLogEntry("[ERROR] Source code directory is not a directory or doesn't exist!");
@@ -137,6 +142,7 @@ public class CoursesPlusDevSync extends JFrame implements ActionListener {
 				sourceCodePath.register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
 				thread = new SyncThread();
 				thread.start();
+			    startBtn.setText("Stop!");
 			} catch (IOException e) {
 				addLogEntry("[ERROR] IOException during setup!");
 				e.printStackTrace();
