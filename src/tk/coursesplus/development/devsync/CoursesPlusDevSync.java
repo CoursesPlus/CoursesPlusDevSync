@@ -38,6 +38,9 @@ public class CoursesPlusDevSync extends JFrame implements ActionListener {
 	JScrollPane scroll;
 	SyncThread thread;
 	
+	public static String[] folders = { "chosen", "css", "etc", "fonts", "images", "js", "scss_gen" };
+    public static String[] browsersupportfolders = { "Chrome", "CoursesPlus.safariextension", "Firefox" };
+	
 	public CoursesPlusDevSync() {
 		super("Courses+ Dev Sync");
 		
@@ -62,8 +65,10 @@ public class CoursesPlusDevSync extends JFrame implements ActionListener {
 	    JPanel middle = new JPanel();
 	    middle.setLayout(new GridLayout(2, 1));
 	    
+	    	startBtn.setFont(new Font("IDONOTEXISTHAHAHAHAHAHAHAH", Font.PLAIN, 24));
 		    startBtn.addActionListener(this);
 		    middle.add(startBtn, BorderLayout.AFTER_LAST_LINE);
+		    middle.setBorder(new TitledBorder(new EtchedBorder (), "Controls"));
 		
 		add(middle);
 
@@ -74,7 +79,7 @@ public class CoursesPlusDevSync extends JFrame implements ActionListener {
 	        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 			scroll = new JScrollPane(log);
 		    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-		    scroll.setBorder(new TitledBorder(new EtchedBorder (), "Logs"));
+		    scroll.setBorder(new TitledBorder(new EtchedBorder (), "Log"));
 	    add(scroll);
 	    
 	    // End panel elements
@@ -160,13 +165,10 @@ class SyncThread extends Thread {
 	            CoursesPlusDevSync.addLogEntry("File " + filename + " has changed!");
 	            
 	            // run rsync and friends
-	            String[] folders = { "chosen", "css", "etc", "fonts", "images", "js", "scss_gen" };
-	            String[] browsersupportfolders = { "Chrome", "CoursesPlus.safariextension", "Firefox" };
-
 	            try {
-	            	for (String browsersupportfolder : browsersupportfolders) {
+	            	for (String browsersupportfolder : CoursesPlusDevSync.browsersupportfolders) {
 	            		String browserSupportPath = "browsersupport/" + browsersupportfolder;
-		            	for (String folder : folders) {
+		            	for (String folder : CoursesPlusDevSync.folders) {
 				            Process p = Runtime.getRuntime().exec("rsync -vur " + CoursesPlusDevSync.sourceCodePath.toString() + "/" + folder + " " + CoursesPlusDevSync.sourceCodePath.toString() + "/" + browserSupportPath );
 				             
 				            BufferedReader stdInput = new BufferedReader(new
