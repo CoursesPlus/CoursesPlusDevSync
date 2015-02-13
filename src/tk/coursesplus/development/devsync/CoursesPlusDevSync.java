@@ -5,10 +5,11 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.file.FileSystems;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardWatchEventKinds;
 import java.nio.file.WatchEvent;
@@ -35,6 +36,7 @@ public class CoursesPlusDevSync extends JFrame implements ActionListener {
 	public static WatchService watcher;
 	public static Path sourceCodePath;
 	JScrollPane scroll;
+	SyncThread thread;
 	
 	public CoursesPlusDevSync() {
 		super("Courses+ Dev Sync");
@@ -102,7 +104,7 @@ public class CoursesPlusDevSync extends JFrame implements ActionListener {
 			    }
 				watcher = FileSystems.getDefault().newWatchService();
 				WatchKey key = sourceCodePath.register(watcher, StandardWatchEventKinds.ENTRY_CREATE, StandardWatchEventKinds.ENTRY_DELETE, StandardWatchEventKinds.ENTRY_MODIFY);
-				SyncThread thread = new SyncThread();
+				thread = new SyncThread();
 				thread.start();
 			} catch (IOException e) {
 				addLogEntry("[ERROR] IOException during setup!");
@@ -113,6 +115,7 @@ public class CoursesPlusDevSync extends JFrame implements ActionListener {
 	
 	public static void addLogEntry(String str) {
 		log.append("[LOG] " + str + "\n");
+		System.out.println("[LOG] " + str);
 	}
 	
 	public static void main(String[] args) {
@@ -155,6 +158,31 @@ class SyncThread extends Thread {
 		        // Resolve the filename against the directory.
 	            Path child = CoursesPlusDevSync.sourceCodePath.resolve(filename);
 	            CoursesPlusDevSync.addLogEntry("File " + filename + " has changed!");
+	            
+	            // run rsync and friends
+	            String[] folders = { "chosen", "css", "etc", "fonts", "images", "js", "scss_gen" };
+	            String[] browsersupportfolders = { "Chrome", "CoursesPlus.safariextension", "Firefox" };
+
+	            try {
+	            	for (String browsersupportfolder : browsersupportfolders) {
+	            		String browserSupportPath = "browsersupport/" + browsersupportfolder;
+		            	for (String folder : folders) {
+				            Process p = Runtime.getRuntime().exec("rsync -vur " + CoursesPlusDevSync.sourceCodePath.toString() + "/" + folder + " " + CoursesPlusDevSync.sourceCodePath.toString() + "/" + browserSupportPath );
+				             
+				            BufferedReader stdInput = new BufferedReader(new
+				                 InputStreamReader(p.getInputStream()));
+				            
+				            // read the output from the command
+				            String s;
+				            while ((s = stdInput.readLine()) != null) {
+				            	CoursesPlusDevSync.addLogEntry("[PROCESS] " + s);
+				            }
+		            	}
+	            	}
+	            } catch (IOException x) {
+	            	CoursesPlusDevSync.addLogEntry("[ERROR] Process IOException! :(");
+	            }
+	             
 		    }
 
 		    // Reset the key -- this step is critical if you want to
