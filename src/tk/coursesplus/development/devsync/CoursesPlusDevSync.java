@@ -29,6 +29,8 @@ import javax.swing.text.DefaultCaret;
 
 @SuppressWarnings("serial")
 public class CoursesPlusDevSync extends JFrame implements ActionListener {
+	public static final String VERSION = "0.1";
+	
 	JLabel title = new JLabel("Courses+ Dev Sync", JLabel.CENTER);
 	JLabel instructions = new JLabel("<html><center>This program syncs the different folders in the Courses+ directory with each other. This is required for cross-browser development.</center></html>", JLabel.CENTER);
 	JButton startBtn = new JButton("Start!");
@@ -45,7 +47,7 @@ public class CoursesPlusDevSync extends JFrame implements ActionListener {
     public static String[] browsersupportfolders = { "Chrome", "CoursesPlus.safariextension", "Firefox" };
 	
 	public CoursesPlusDevSync() {
-		super("Courses+ Dev Sync");
+		super("Courses+ Dev Sync v" + VERSION);
 		
 		setBounds(100,100,600,600);
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -104,7 +106,7 @@ public class CoursesPlusDevSync extends JFrame implements ActionListener {
 	    
 	    setVisible(true);
 	    
-	    addLogEntry("Courses+ Dev Sync ready!");
+	    addLogEntry("Courses+ Dev Sync version " + VERSION + " ready!");
 	    
 	    String osname = System.getProperty("os.name");
 	    addLogEntry("Checking OS - it is " + osname + "...");
