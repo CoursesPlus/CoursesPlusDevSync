@@ -14,6 +14,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 import javax.swing.text.DefaultCaret;
 
 public class CoursesPlusDevSync extends JFrame implements ActionListener {
@@ -60,6 +62,7 @@ public class CoursesPlusDevSync extends JFrame implements ActionListener {
 	        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 			scroll = new JScrollPane(log);
 		    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		    scroll.setBorder(new TitledBorder(new EtchedBorder (), "Logs"));
 	    add(scroll);
 	    
 	    // End panel elements
