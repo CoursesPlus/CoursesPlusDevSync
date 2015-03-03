@@ -29,7 +29,7 @@ import javax.swing.text.DefaultCaret;
 
 @SuppressWarnings("serial")
 public class CoursesPlusDevSync extends JFrame implements ActionListener {
-	public static final String VERSION = "0.1";
+	public static final String VERSION = "0.2";
 	
 	JLabel title = new JLabel("Courses+ Dev Sync", JLabel.CENTER);
 	JLabel instructions = new JLabel("<html><center>This program syncs the different folders in the Courses+ directory with each other. This is required for cross-browser development.</center></html>", JLabel.CENTER);
