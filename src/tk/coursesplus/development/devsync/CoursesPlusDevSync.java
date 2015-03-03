@@ -112,7 +112,7 @@ public class CoursesPlusDevSync extends JFrame implements ActionListener {
 	    addLogEntry("Checking OS - it is " + osname + "...");
 	    if (!osname.startsWith("Mac OS X")) {
 	    	addLogEntry("Unsupported OS - " + osname + "!");
-	    	JOptionPane.showMessageDialog(null, "Your operating system, " + osname + ", is not currently supported by this tool.\nCurrently, it's only been tested in Mac OS X.\nBad things probably will happen in other operating systems, but who knows?", "Unsupported operating system", JOptionPane.WARNING_MESSAGE);
+	    	JOptionPane.showMessageDialog(null, "Your operating system, " + osname + ", is not currently supported by this tool.\nCurrently, it's only been tested in Mac OS X.\nBad things probably will happen in other operating systems.", "Unsupported operating system", JOptionPane.WARNING_MESSAGE);
 	    }
 
 	    String pathPlace = System.getProperty("user.home") + "/Documents/Git/CoursesPlus/CoursesPlus/";
